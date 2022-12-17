@@ -30,3 +30,8 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: AKIA3NAWU3WKN54H3PNZ
+        aws-secret-access-key: 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
