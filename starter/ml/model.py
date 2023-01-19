@@ -61,3 +61,39 @@ def inference(model, X):
     """
     preds = model.predict(X)
     return preds
+
+# Write a function that outputs the performance of the model on slices 
+# of the data
+def compute_model_metrics_by_slice(X, y, preds, slice_column):
+    """
+    Computes the model metrics by slice.
+
+    Inputs
+    ------
+    X : pd.Dataframe
+        Data used for prediction.
+    y : np.array
+        Known labels, binarized.
+    preds : np.array
+        Predicted labels, binarized.
+    slice_column : str
+        Column used for slicing.
+    Returns
+    -------
+    metrics_by_slice : dict
+        Dictionary of metrics by slice.
+    """
+    metrics_by_slice = {}
+    for slice_value in X[slice_column].unique():
+        slice_mask = X[slice_column] == slice_value
+        slice_preds = preds[slice_mask]
+        slice_y = y[slice_mask]
+        precision, recall, fbeta = compute_model_metrics(slice_y, slice_preds)
+        metrics_by_slice[slice_value] = {
+            "precision": precision,
+            "recall": recall,
+            "fbeta": fbeta,
+        }
+    return metrics_by_slice
+
+

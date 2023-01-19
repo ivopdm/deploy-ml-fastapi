@@ -52,7 +52,9 @@ def process_data(
 
     X_categorical = X[categorical_features].values
     X_continuous = X.drop(*[categorical_features], axis=1)
-
+    # Remove unnamed columns.
+    X_continuous = X_continuous.loc[:, ~X_continuous.columns.str.contains("^Unnamed")]
+    
     if training is True:
         encoder = OneHotEncoder(sparse=False, handle_unknown="ignore")
         lb = LabelBinarizer()
