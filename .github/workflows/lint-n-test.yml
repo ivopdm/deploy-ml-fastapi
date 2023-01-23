@@ -44,7 +44,7 @@ jobs:
         dvc init
     
     - name: Pull data
-      uses: dvc-action/dvc@v1
+      uses: iterative/setup-dvc@v1
       with:
         cmd: pull
         remote: s3://project3-nd0821
