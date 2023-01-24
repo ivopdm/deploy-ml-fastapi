@@ -2,7 +2,7 @@ import requests
 
 def test_welcome_message():
     # response = requests.get("http://localhost:8000/")
-    response = requests.get("https://salary-estimator.herokuapp.com:8000/")
+    response = requests.get("https://salary-estimator.herokuapp.com:5000/")
     assert response.json() == {"message": "Welcome to my API"}
     assert response.status_code == 200
 
@@ -12,7 +12,7 @@ def test_predict():
     "relationship": "Husband", "race": "White", "sex":"Male", "capital_gain": 0, 
     "capital_loss": 0, "hours_per_week": 43, "native_country": "United-States"}
     # response = requests.post("http://localhost:8000/predict", json=data)
-    response = requests.post("https://salary-estimator.herokuapp.com:8000/predict", json=data)
+    response = requests.post("https://salary-estimator.herokuapp.com:5000/predict", json=data)
     assert response.status_code == 200
     assert "prediction" in response.json()
 
@@ -24,5 +24,5 @@ def test_predict_with_invalid_data():
         "capital-gain": "2174", "capital-loss": "0", "hours-per-week": "40",
         "native-country": "United-States"}
     # response = requests.post("http://localhost:8000/predict", json=data)
-    response = requests.post("https://salary-estimator.herokuapp.com:8000/predict", json=data)
+    response = requests.post("https://salary-estimator.herokuapp.com:5000/predict", json=data)
     assert response.status_code == 422
