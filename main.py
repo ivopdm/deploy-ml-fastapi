@@ -56,17 +56,18 @@ async def predict(data: Data):
         # data preprocessing
         df = pd.DataFrame(data.dict(),index=[0])
         # df = pd.json_normalize(data)
-        # print(df.head())
+        print(df.head())
         # print(data.dict())
 
         # Proces the test data with the process_data function.
-        X, _, _, _ = process_data(
-            df, categorical_features=cat_features, label=None, 
-            training=False, encoder=encoder, lb=lb
-        )
+        # X, _, _, _ = process_data(
+        #     df, categorical_features=cat_features, label=None, 
+        #     training=False, encoder=encoder, lb=lb
+        # )
 
         # do model inference
-        result = model.predict(X)
-        return {"prediction": result.tolist()}
+        # result = model.predict(X)
+        # return {"prediction": result.tolist()}
+        pass
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")
