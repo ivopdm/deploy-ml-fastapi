@@ -10,7 +10,7 @@ sys.path.append('starter/ml')
 
 from data import process_data
 # Get root directory of the project.
-root_dir = os.path.dirname(os.path.abspath(__file__))
+# root_dir = os.path.dirname(os.path.abspath(__file__))
 
 app = FastAPI()
 
@@ -47,27 +47,30 @@ def read_root():
 
 @app.post("/predict")
 async def predict(data: Data):
+    root_dir = os.path.dirname(__file__)
     # load pickle model
-    # model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
+    model = pickle.load(os.path.join(root_dir,"model","model.pkl"))
     # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
     # lb = LabelBinarizer()
+    encoder = pickle.load(os.path.join(root_dir,"model","encoder.pkl"))
+    lb = LabelBinarizer()
     
     try:
         # data preprocessing
-        # df = pd.DataFrame(data.dict(),index=[0])
+        df = pd.DataFrame(data.dict(),index=[0])
         # df = pd.json_normalize(data)
         # print(df.head())
         # print(data.dict())
 
         # Proces the test data with the process_data function.
-        # X, _, _, _ = process_data(
-        #     df, categorical_features=cat_features, label=None, 
-        #     training=False, encoder=encoder, lb=lb
-        # )
+        X, _, _, _ = process_data(
+            df, categorical_features=cat_features, label=None, 
+            training=False, encoder=encoder, lb=lb
+        )
 
         # do model inference
-        # result = model.predict(X)
-        # return {"prediction": result.tolist()}
-        return {"prediction": ">=50k"}
+        result = model.predict(X)
+        return {"prediction": result.tolist()}
+        # return {"prediction": ">=50k"}
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")
