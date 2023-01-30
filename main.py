@@ -49,14 +49,14 @@ def read_root():
 async def predict(data: Data):
     # load pickle model
     model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
-    encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
-    lb = LabelBinarizer()
+    # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
+    # lb = LabelBinarizer()
     
     try:
         # data preprocessing
-        df = pd.DataFrame(data.dict(),index=[0])
+        # df = pd.DataFrame(data.dict(),index=[0])
         # df = pd.json_normalize(data)
-        print(df.head())
+        # print(df.head())
         # print(data.dict())
 
         # Proces the test data with the process_data function.
@@ -68,6 +68,6 @@ async def predict(data: Data):
         # do model inference
         # result = model.predict(X)
         # return {"prediction": result.tolist()}
-        pass
+        return {"prediction": ">=50k"}
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")
