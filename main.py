@@ -48,7 +48,7 @@ def read_root():
 @app.post("/predict")
 async def predict(data: Data):
     # load pickle model
-    model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
+    # model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
     # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
     # lb = LabelBinarizer()
     
