@@ -1,6 +1,7 @@
 import os
 import pickle
 from fastapi import FastAPI, HTTPException
+import numpy as np
 from pydantic import BaseModel, Field
 import pandas as pd
 import sys
@@ -25,21 +26,12 @@ class Data(BaseModel):
     relationship: str 
     race: str
     sex: str
-    capital_gain: int 
-    capital_loss: int 
-    hours_per_week: int 
+    capital_gain: float 
+    capital_loss: float 
+    hours_per_week: float 
     native_country: str 
 
-cat_features = [
-    "workclass",
-    "education",
-    "marital_status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native_country",
-]
+
 
 @app.get("/")
 def read_root():
@@ -53,24 +45,38 @@ async def predict(data: Data):
     # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
     # lb = LabelBinarizer()
     encoder = pickle.load(os.path.join(root_dir,"model","encoder.pkl"))
-    lb = LabelBinarizer()
     
     try:
         # data preprocessing
-        df = pd.DataFrame(data.dict(),index=[0])
-        # df = pd.json_normalize(data)
-        # print(df.head())
-        # print(data.dict())
+        # df = pd.DataFrame(data.dict(),index=[0])
+
+        # Replace - by _ in dictionary values.
+        data_dict = data.dict()
+        data_dict = {k.replace("-", "_"): v for k, v in data_dict.items()}
+        df = pd.DataFrame(data_dict, index=[0])
+
+        # Define categorical features.
+        cat_features = [
+            "workclass",
+            "education",
+            "marital_status",
+            "occupation",
+            "relationship",
+            "race",
+            "sex",
+            "native_country",
+        ]
 
         # Proces the test data with the process_data function.
-        X, _, _, _ = process_data(
-            df, categorical_features=cat_features, label=None, 
-            training=False, encoder=encoder, lb=lb
-        )
+        X_categorical = X[cat_features].values
+        X_continuous = X.drop(*[cat_features], axis=1)
+        # Remove unnamed columns.
+        X_continuous = X_continuous.loc[:, ~X_continuous.columns.str.contains("^Unnamed")]
+        X = np.concatenate([X_continuous, X_categorical], axis=1)
 
         # do model inference
         result = model.predict(X)
         return {"prediction": result.tolist()}
-        # return {"prediction": ">=50k"}
+        # return {"prediction": ">50k"}
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")

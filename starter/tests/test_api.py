@@ -7,10 +7,23 @@ def test_welcome_message():
     assert response.status_code == 200
 
 def test_predict():
-    data = {"age": 28, "workclass": "Private", "fnlgt": 30912, "education": "HS-grad", 
-    "education_num": 9, "marital_status": "Married-civ-spouse", "occupation": "Other-service",
-    "relationship": "Husband", "race": "White", "sex":"Male", "capital_gain": 0, 
-    "capital_loss": 0, "hours_per_week": 43, "native_country": "United-States"}
+    data = {
+        "age": 28, 
+        "workclass": "Private", 
+        "fnlgt": 30912, 
+        "education": "HS-grad", 
+        "education_num": 9, 
+        "marital_status": "Married-civ-spouse", 
+        "occupation": "Other-service",
+        "relationship": "Husband", 
+        "race": "White", 
+        "sex": "Male", 
+        "capital_gain": 2174, 
+        "capital_loss": 0, 
+        "hours_per_week": 43, 
+        "native_country": "United-States"
+    }
+
     # response = requests.post("http://localhost:8000/predict", json=data)
     response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
     assert response.status_code == 200, response.json()
