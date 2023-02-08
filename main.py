@@ -1,3 +1,4 @@
+import json
 import os
 import pickle
 from fastapi import FastAPI, HTTPException
@@ -41,19 +42,21 @@ def read_root():
 async def predict(data: Data):
     root_dir = os.path.dirname(__file__)
     # load pickle model
-    model = pickle.load(os.path.join(root_dir,"model","model.pkl"))
-    # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
+    model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
+    encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
     # lb = LabelBinarizer()
-    encoder = pickle.load(os.path.join(root_dir,"model","encoder.pkl"))
+    # encoder = pickle.load(os.path.join(root_dir,"model","encoder.pkl"))
     
     try:
         # data preprocessing
-        # df = pd.DataFrame(data.dict(),index=[0])
+        df = pd.DataFrame(data.dict(),index=[0])
 
         # Replace - by _ in dictionary values.
-        data_dict = data.dict()
-        data_dict = {k.replace("-", "_"): v for k, v in data_dict.items()}
-        df = pd.DataFrame(data_dict, index=[0])
+        # data_dict = data.dict()
+        # data_dict = {k: v.replace("-", "_") for k, v in data_dict.items()}
+        # df = pd.DataFrame(data_dict, index=[0])
+        
+
 
         # Define categorical features.
         cat_features = [
@@ -68,8 +71,9 @@ async def predict(data: Data):
         ]
 
         # Proces the test data with the process_data function.
-        X_categorical = X[cat_features].values
-        X_continuous = X.drop(*[cat_features], axis=1)
+        X_categorical = df[cat_features].values
+        X_continuous = df.drop(*[cat_features], axis=1)
+        X_categorical = encoder.transform(X_categorical)
         # Remove unnamed columns.
         X_continuous = X_continuous.loc[:, ~X_continuous.columns.str.contains("^Unnamed")]
         X = np.concatenate([X_continuous, X_categorical], axis=1)
