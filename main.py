@@ -1,3 +1,4 @@
+from io import BytesIO
 import json
 import os
 import pickle
@@ -6,6 +7,7 @@ import numpy as np
 from pydantic import BaseModel, Field
 import pandas as pd
 import sys
+import requests
 
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 sys.path.append('starter/ml')
@@ -40,22 +42,27 @@ def read_root():
 
 @app.post("/predict")
 async def predict(data: Data):
-    root_dir = os.path.dirname(__file__)
-    # load pickle model
-    model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
-    encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
+    url_model_pickle = "https://github.com/ivopdm/deploy-ml-fastapi/raw/main/model/model.pkl"
+    request_model_pickle = requests.get(url_model_pickle)
+    open("model.pkl", "wb").write(request_model_pickle.content)
+    with open("model.pkl", "rb") as f:
+        model = pickle.load(f)
+
+    url_encoder_pickle = "https://github.com/ivopdm/deploy-ml-fastapi/raw/main/model/encoder.pkl"
+    request_encoder_pickle = requests.get(url_encoder_pickle)
+    open("encoder.pkl", "wb").write(request_encoder_pickle.content)
+    with open("encoder.pkl", "rb") as f1:
+        encoder = pickle.load(f1)
+
+    # root_dir = os.path.dirname(__file__)
+    # # load pickle model
+    # model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
+    # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
     # lb = LabelBinarizer()
-    # encoder = pickle.load(os.path.join(root_dir,"model","encoder.pkl"))
-    
+
     try:
         # data preprocessing
-        df = pd.DataFrame(data.dict(),index=[0])
-
-        # Replace - by _ in dictionary values.
-        # data_dict = data.dict()
-        # data_dict = {k: v.replace("-", "_") for k, v in data_dict.items()}
-        # df = pd.DataFrame(data_dict, index=[0])
-        
+        df = pd.DataFrame(data.dict(),index=[0])        
 
 
         # Define categorical features.
@@ -81,6 +88,5 @@ async def predict(data: Data):
         # do model inference
         result = model.predict(X)
         return {"prediction": result.tolist()}
-        # return {"prediction": ">50k"}
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")
