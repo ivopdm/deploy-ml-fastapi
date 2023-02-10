@@ -44,15 +44,15 @@ def read_root():
 async def predict(data: Data):
     url_model_pickle = "https://github.com/ivopdm/deploy-ml-fastapi/raw/main/model/model.pkl"
     request_model_pickle = requests.get(url_model_pickle)
-    open("model.pkl", "wb").write(request_model_pickle.content)
-    with open("model.pkl", "rb") as f:
-        model = pickle.load(f)
+    # open("model.pkl", "wb").write(request_model_pickle.content)
+    # with open("model.pkl", "rb") as f:
+    model = pickle.load(BytesIO(request_model_pickle.content))
 
     url_encoder_pickle = "https://github.com/ivopdm/deploy-ml-fastapi/raw/main/model/encoder.pkl"
     request_encoder_pickle = requests.get(url_encoder_pickle)
-    open("encoder.pkl", "wb").write(request_encoder_pickle.content)
-    with open("encoder.pkl", "rb") as f1:
-        encoder = pickle.load(f1)
+    # open("encoder.pkl", "wb").write(request_encoder_pickle.content)
+    # with open("encoder.pkl", "rb") as f1:
+    encoder = pickle.load(BytesIO(request_encoder_pickle.content))
 
     # root_dir = os.path.dirname(__file__)
     # # load pickle model
