@@ -2,8 +2,8 @@ import json
 import requests
 
 def test_welcome_message():
-    # response = requests.get("http://localhost:8000/")
-    response = requests.get("https://salary-estimator.herokuapp.com")
+    response = requests.get("http://localhost:8000/")
+    # response = requests.get("https://salary-estimator.herokuapp.com")
     assert response.json() == {"message": "Welcome to my API"}
     assert response.status_code == 200
 
@@ -25,8 +25,8 @@ def test_predict_lte50k():
         "native_country": "United-States",
     }
 
-    response = requests.post("http://localhost:8000/predict", json=data)
-    # response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
+    # response = requests.post("http://localhost:8000/predict", json=data)
+    response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
     assert response.status_code == 200
     assert response.json()["prediction"] == "<=50K"
 
@@ -47,9 +47,9 @@ def test_predict_gt50k():
         "hours_per_week": 48,
         "native_country": "United-States",
     }
-    
-    response = requests.post("http://localhost:8000/predict", json=data)
-    # response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
+
+    # response = requests.post("http://localhost:8000/predict", json=data)
+    response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
     assert response.status_code == 200
     assert response.json()["prediction"] == ">50K"
 
@@ -60,6 +60,6 @@ def test_predict_with_invalid_data():
         "relationship": "Husband", "race": "White","sex":"Male",
         "capital-gain": "2174", "capital-loss": "0", "hours-per-week": "40",
         "native-country": "United-States"}
-    # response = requests.post("http://localhost:8000/predict", json=data)
-    response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
+    response = requests.post("http://localhost:8000/predict", json=data)
+    # response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
     assert response.status_code == 422
