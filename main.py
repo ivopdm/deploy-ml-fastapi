@@ -70,13 +70,16 @@ async def predict(data: Data):
         X_categorical = df[cat_features].values
         X_continuous = df.drop(*[cat_features], axis=1)
         X_categorical = encoder.transform(X_categorical)
-        
+
         # Remove unnamed columns.
         X_continuous = X_continuous.loc[:, ~X_continuous.columns.str.contains("^Unnamed")]
         X = np.concatenate([X_continuous, X_categorical], axis=1)
 
         # do model inference
-        result = model.predict(X)
-        return {"prediction": result.tolist()}
+        pred = model.predict(X)   
+        res = "<=50K" if pred[0] == 0 else ">50K"
+
+        # turn prediction into JSON
+        return {"prediction": res}
     except:
         raise HTTPException(status_code=400, detail="Error during model inference")

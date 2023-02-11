@@ -1,5 +1,6 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import GridSearchCV
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -17,9 +18,17 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    # Trains a machine learning model and returns it.
+    # logistic regression model hiperparameters tuning
     model = LogisticRegression()
-    model.fit(X_train, y_train)
+    param_grid = {
+        "C": [0.001, 0.01, 0.1, 1, 10, 100, 1000],
+        "penalty": ["l1", "l2"],
+        "solver": ["liblinear"],
+    }
+    grid = GridSearchCV(model, param_grid, cv=5, scoring="f1")
+    grid.fit(X_train, y_train)
+    model = grid.best_estimator_
+
     return model
 
 
