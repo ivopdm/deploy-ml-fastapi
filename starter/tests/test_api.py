@@ -1,3 +1,4 @@
+import json
 import requests
 
 def test_welcome_message():
@@ -26,8 +27,8 @@ def test_predict():
 
     # response = requests.post("http://localhost:8000/predict", json=data)
     response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
-    assert response.status_code == 200, response.json()
-    # assert "prediction" in response.json()
+    assert response.status_code == 200
+    assert "prediction" in response.json()
 
 def test_predict_with_invalid_data():
     data = {"age": "39", "workclass": "42", "fnlgt": "77516", 
