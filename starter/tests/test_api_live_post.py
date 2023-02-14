@@ -23,3 +23,4 @@ response = requests.post(api_endpoint + "predict", json=payload)
 
 print(f"Input:{payload}")
 print(f"Prediction:{response.content}")
+print(f"Status Code:{response.status_code}")
