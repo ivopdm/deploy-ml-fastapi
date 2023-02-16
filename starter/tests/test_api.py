@@ -25,8 +25,8 @@ def test_predict_lte50k():
         "native_country": "United-States",
     }
 
-    response = requests.post("http://localhost:8000/predict", json=data)
-    # response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
+    # response = requests.post("http://localhost:8000/predict", json=data)
+    response = requests.post("https://salary-estimator.herokuapp.com/predict", json=data)
     assert response.status_code == 200
     assert response.json()["prediction"] == "<=50K"
 
