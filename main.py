@@ -62,6 +62,11 @@ def read_root():
 
 @app.post("/predict")
 async def predict(data: Data):
+    # root_dir = os.path.dirname(__file__)
+    
+    # model = pickle.load(open(os.path.join(root_dir,"model","model.pkl"), "rb"))
+    # encoder = pickle.load(open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
+
     url_model_pickle = "https://github.com/ivopdm/deploy-ml-fastapi/raw/main/model/model.pkl"
     request_model_pickle = requests.get(url_model_pickle)
     model = pickle.load(BytesIO(request_model_pickle.content))
