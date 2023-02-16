@@ -58,6 +58,12 @@ print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {fbeta:.4f}")
 
 # Compute the model metrics by slice using the test data
 # and save the results in a json file.
-metrics_by_slice = compute_model_metrics_by_slice(test, y_test, model.predict(X_test),'native-country')
-with open(os.path.join(root_dir, 'screenshots', 'metrics_by_slice.json'), 'w') as f:
+metrics_by_slice = compute_model_metrics_by_slice(test, 
+                                                  y_test, 
+                                                  model.predict(X_test),'native-country')
+with open(
+    os.path.join(root_dir, 
+                       'screenshots', 
+                       'metrics_by_slice.json'), 
+        'w') as f:
     json.dump(metrics_by_slice, f)
