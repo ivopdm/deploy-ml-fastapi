@@ -1,6 +1,7 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
+from tpot import TPOTClassifier
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -18,6 +19,7 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
+
     # logistic regression model hiperparameters tuning
     model = LogisticRegression()
     param_grid = {
@@ -28,7 +30,7 @@ def train_model(X_train, y_train):
     grid = GridSearchCV(model, param_grid, cv=5, scoring="f1")
     grid.fit(X_train, y_train)
     model = grid.best_estimator_
-
+    
     return model
 
 
