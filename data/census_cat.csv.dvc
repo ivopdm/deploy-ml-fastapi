@@ -1,4 +1,4 @@
 outs:
-- md5: 884247d87b9c500c238ae9cb4b7abe55
-  size: 4180178
+- md5: ed122479cdeba20ec0bceb5169c8c221
+  size: 3735423
   path: census_cat.csv
