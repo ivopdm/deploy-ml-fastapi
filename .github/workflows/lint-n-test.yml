@@ -36,8 +36,8 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: AKIA3NAWU3WKN54H3PNZ
-        aws-secret-access-key: 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
+        aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
         aws-region: us-east-1
     
     - name: Set up DVC
@@ -48,4 +48,4 @@ jobs:
       uses: iterative/setup-dvc@v1
       with:
         cmd: pull
-        remote: s3://project3-nd0821
+        remote: s3://nd0821
