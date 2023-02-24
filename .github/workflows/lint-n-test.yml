@@ -42,7 +42,7 @@ jobs:
     
     - name: Set up DVC
       run: |
-        dvc init
+        dvc init -f
     
     - name: Pull data
       uses: iterative/setup-dvc@v1
