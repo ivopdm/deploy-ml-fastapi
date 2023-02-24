@@ -81,3 +81,52 @@ def test_predict_with_invalid_data():
         "https://salary-estimator.herokuapp.com/predict",
         json=data)
     assert response.status_code == 422
+
+# test prediction for null values
+
+
+def test_predict_with_null_values():
+    data = {
+        "age": None,
+        "workclass": None,
+        "fnlgt": None,
+        "education": None,
+        "education_num": None,
+        "marital_status": None,
+        "occupation": None,
+        "relationship": None,
+        "race": None,
+        "sex": None,
+        "capital_gain": None,
+        "capital_loss": None,
+        "hours_per_week": None,
+        "native-country": None}
+    # response = requests.post("http://localhost:8000/predict", json=data)
+    response = requests.post(
+        "https://salary-estimator.herokuapp.com/predict",
+        json=data)
+    assert response.status_code == 422
+
+# test prediction for missing variables
+
+
+def test_predict_with_missing_variables():
+    data = {
+        "education": None,
+        "education_num": None,
+        "marital_status": None,
+        "occupation": None,
+        "relationship": None,
+        "race": None,
+        "sex": None,
+        "capital_gain": None,
+        "capital_loss": None,
+        "hours_per_week": None,
+        "native-country": None}
+
+    # response = requests.post("http://localhost:8000/predict", json=data)
+
+    response = requests.post(
+        "https://salary-estimator.herokuapp.com/predict",
+        json=data)
+    assert response.status_code == 422
