@@ -63,13 +63,13 @@ async def predict(data: Data):
     # encoder = pickle.load(
     #   open(os.path.join(root_dir,"model","encoder.pkl"), "rb"))
 
-    url_model_pickle = ("https://github.com"
-        "ivopdm/deploy-ml-fastapi/raw/main/model/model.pkl")
+    url_model_pickle = ("https://github.com/ivopdm/deploy-ml-fastapi/raw"
+                        "/main/model/model.pkl")
     request_model_pickle = requests.get(url_model_pickle)
     model = pickle.load(BytesIO(request_model_pickle.content))
 
-    url_encoder_pickle = ("https://github.com/ivopdm"
-        "/deploy-ml-fastapi/raw/main/model/encoder.pkl")
+    url_encoder_pickle = ("https://github.com/ivopdm/deploy-ml-fastapi/raw"
+                          "/main/model/encoder.pkl")
     request_encoder_pickle = requests.get(url_encoder_pickle)
     encoder = pickle.load(BytesIO(request_encoder_pickle.content))
 
@@ -95,8 +95,8 @@ async def predict(data: Data):
         X_categorical = encoder.transform(X_categorical)
 
         # Remove unnamed columns.
-        X_continuous = X_continuous.loc[:,
-                                        ~X_continuous.columns.str.contains("^Unnamed")]
+        X_continuous = X_continuous.loc[:, ~X_continuous.columns.str.contains(
+                                                                  "^Unnamed")]
         X = np.concatenate([X_continuous, X_categorical], axis=1)
 
         # do model inference

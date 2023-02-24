@@ -1,9 +1,10 @@
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import GridSearchCV
-from tpot import TPOTClassifier
 
 # Optional: implement hyperparameter tuning.
+
+
 def train_model(X_train, y_train):
     """
     Trains a machine learning model and returns it.
@@ -30,13 +31,14 @@ def train_model(X_train, y_train):
     grid = GridSearchCV(model, param_grid, cv=5, scoring="f1")
     grid.fit(X_train, y_train)
     model = grid.best_estimator_
-    
+
     return model
 
 
 def compute_model_metrics(y, preds):
     """
-    Validates the trained machine learning model using precision, recall, and F1.
+    Validates the trained machine learning model
+    using precision, recall, and F1.
 
     Inputs
     ------
@@ -73,8 +75,10 @@ def inference(model, X):
     preds = model.predict(X)
     return preds
 
-# Write a function that outputs the performance of the model on slices 
+# Write a function that outputs the performance of the model on slices
 # of the data
+
+
 def compute_model_metrics_by_slice(X, y, preds, slice_column):
     """
     Computes the model metrics by slice.
@@ -106,5 +110,3 @@ def compute_model_metrics_by_slice(X, y, preds, slice_column):
             "fbeta": fbeta,
         }
     return metrics_by_slice
-
-
